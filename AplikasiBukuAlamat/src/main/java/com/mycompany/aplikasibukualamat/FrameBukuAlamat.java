@@ -72,6 +72,11 @@ public class FrameBukuAlamat extends javax.swing.JFrame {
         });
 
         btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnHapus.setText("Hapus");
 
@@ -207,6 +212,39 @@ public class FrameBukuAlamat extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Silakan lengkapi semua field.", "Peringatan", JOptionPane.WARNING_MESSAGE);
     }
     }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+         // Mendapatkan baris yang dipilih di tabel
+        int selectedRow = tblBukuAlamat.getSelectedRow();
+
+        // Validasi jika tidak ada baris yang dipilih
+        if (selectedRow != -1) {
+            // Mengambil data yang ada di baris yang dipilih
+            String nama = txtNama.getText();
+            String alamat = txtAlamat.getText();
+            String nomorTelepon = txtTelepon.getText();
+
+            // Validasi jika ada input yang kosong
+            if (!nama.isEmpty() && !alamat.isEmpty() && !nomorTelepon.isEmpty()) {
+                // Mengupdate baris yang dipilih di model tabel
+                DefaultTableModel model = (DefaultTableModel) tblBukuAlamat.getModel();
+                model.setValueAt(nama, selectedRow, 0); // Mengupdate kolom "Nama"
+                model.setValueAt(alamat, selectedRow, 1); // Mengupdate kolom "Alamat"
+                model.setValueAt(nomorTelepon, selectedRow, 2); // Mengupdate kolom "Nomor Telepon"
+
+                // Mengosongkan field input setelah mengedit data
+                txtNama.setText("");
+                txtAlamat.setText("");
+                txtTelepon.setText("");
+            } else {
+                // Menampilkan pesan jika ada field yang kosong
+                JOptionPane.showMessageDialog(this, "Silakan lengkapi semua field.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            // Menampilkan pesan jika tidak ada baris yang dipilih
+            JOptionPane.showMessageDialog(this, "Silakan pilih kontak yang ingin diedit.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
 
     /**
      * @param args the command line arguments
