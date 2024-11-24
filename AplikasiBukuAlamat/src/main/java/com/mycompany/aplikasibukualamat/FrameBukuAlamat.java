@@ -18,6 +18,8 @@ public class FrameBukuAlamat extends javax.swing.JFrame {
     public FrameBukuAlamat() {
         initComponents();
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -143,6 +145,11 @@ public class FrameBukuAlamat extends javax.swing.JFrame {
         );
 
         btnCari.setText("Cari Berdasarkan Nama");
+        btnCari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariActionPerformed(evt);
+            }
+        });
 
         tblBukuAlamat.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -200,7 +207,7 @@ public class FrameBukuAlamat extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
                 // Mengambil data dari input pengguna
             String nama = txtNama.getText();
@@ -286,6 +293,41 @@ public class FrameBukuAlamat extends javax.swing.JFrame {
         // Menghapus pemilihan baris di tabel (Optional)
         tblBukuAlamat.clearSelection();
     }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
+             // Ambil nama yang dicari dari JTextField
+            String namaCari = txtCariNama.getText().toLowerCase();  // Mengubah ke huruf kecil untuk pencarian tidak case-sensitive
+
+            // Mendapatkan model tabel
+            DefaultTableModel model = (DefaultTableModel) tblBukuAlamat.getModel();
+
+            // Menghapus semua baris dalam tabel (untuk menghindari data yang tidak relevan tetap tampil)
+            model.setRowCount(0);
+
+            // Variabel untuk mengecek apakah data ditemukan
+            boolean found = false;
+
+            // Menelusuri setiap baris yang ada di dalam model tabel
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String nama = (String) model.getValueAt(i, 0);  // Nama ada di kolom pertama (indeks 0)
+
+                // Membandingkan nama yang dicari dengan nama dalam tabel
+                if (nama.toLowerCase().contains(namaCari)) {
+                    // Jika nama cocok, tambahkan baris ke model tabel
+                    model.addRow(new Object[]{
+                        model.getValueAt(i, 0), // Nama
+                        model.getValueAt(i, 1), // Alamat
+                        model.getValueAt(i, 2)  // Nomor Telepon
+                    });
+                    found = true;
+                }
+            }
+
+            // Pesan jika tidak ada data yang ditemukan
+            if (!found) {
+                JOptionPane.showMessageDialog(this, "Nama tidak ditemukan.", "Peringatan", JOptionPane.INFORMATION_MESSAGE);
+            }
+    }//GEN-LAST:event_btnCariActionPerformed
 
     /**
      * @param args the command line arguments
