@@ -79,6 +79,11 @@ public class FrameBukuAlamat extends javax.swing.JFrame {
         });
 
         btnHapus.setText("Hapus");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
 
         btnClear.setText("Clear");
 
@@ -245,6 +250,27 @@ public class FrameBukuAlamat extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Silakan pilih kontak yang ingin diedit.", "Peringatan", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        // Mendapatkan baris yang dipilih di tabel
+        int selectedRow = tblBukuAlamat.getSelectedRow();
+
+        // Validasi jika tidak ada baris yang dipilih
+        if (selectedRow != -1) {
+            // Menampilkan pesan konfirmasi sebelum menghapus
+            int confirm = JOptionPane.showConfirmDialog(this, "Apakah Anda yakin ingin menghapus kontak ini?", 
+                "Konfirmasi Hapus", JOptionPane.YES_NO_OPTION);
+
+            // Jika pengguna mengklik "Yes", hapus baris
+            if (confirm == JOptionPane.YES_OPTION) {
+                DefaultTableModel model = (DefaultTableModel) tblBukuAlamat.getModel();
+                model.removeRow(selectedRow); // Menghapus baris yang dipilih dari tabel
+            }
+        } else {
+            // Menampilkan pesan jika tidak ada baris yang dipilih
+            JOptionPane.showMessageDialog(this, "Silakan pilih kontak yang ingin dihapus.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnHapusActionPerformed
 
     /**
      * @param args the command line arguments
