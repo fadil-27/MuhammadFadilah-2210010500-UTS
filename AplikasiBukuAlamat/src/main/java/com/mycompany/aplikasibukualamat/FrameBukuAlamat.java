@@ -4,10 +4,12 @@
  */
 package com.mycompany.aplikasibukualamat;
 
-/**
- *
- * @author LENOVO
- */
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 public class FrameBukuAlamat extends javax.swing.JFrame {
 
     /**
@@ -63,6 +65,11 @@ public class FrameBukuAlamat extends javax.swing.JFrame {
         jLabel3.setText("No. Telp");
 
         btnTambah.setText("Tambah");
+        btnTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahActionPerformed(evt);
+            }
+        });
 
         btnEdit.setText("Edit");
 
@@ -178,6 +185,28 @@ public class FrameBukuAlamat extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+                // Mengambil data dari input pengguna
+            String nama = txtNama.getText();
+            String alamat = txtAlamat.getText();
+            String nomorTelepon = txtTelepon.getText();
+
+            // Validasi jika ada input yang kosong
+            if (!nama.isEmpty() && !alamat.isEmpty() && !nomorTelepon.isEmpty()) {
+                // Menambahkan baris baru ke dalam model tabel
+                DefaultTableModel model = (DefaultTableModel) tblBukuAlamat.getModel();
+                model.addRow(new Object[]{nama, alamat, nomorTelepon});
+
+                // Mengosongkan field input setelah menambah data
+                txtNama.setText("");
+                txtAlamat.setText("");
+                txtTelepon.setText("");
+            } else {
+                // Menampilkan pesan jika ada field yang kosong
+                JOptionPane.showMessageDialog(this, "Silakan lengkapi semua field.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+    }
+    }//GEN-LAST:event_btnTambahActionPerformed
 
     /**
      * @param args the command line arguments
