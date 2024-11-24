@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class FrameBukuAlamat extends javax.swing.JFrame {
 
@@ -172,31 +173,31 @@ public class FrameBukuAlamat extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtCariNama, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnCari))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(43, Short.MAX_VALUE))
+                        .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCari, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtCariNama, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(83, 83, 83))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCariNama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCari))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,38 +296,52 @@ public class FrameBukuAlamat extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
-             // Ambil nama yang dicari dari JTextField
-            String namaCari = txtCariNama.getText().toLowerCase();  // Mengubah ke huruf kecil untuk pencarian tidak case-sensitive
+            // Ambil nama yang dicari dari JTextField
+               String namaCari = txtCariNama.getText().toLowerCase();  // Mengubah ke huruf kecil untuk pencarian tidak case-sensitive
 
-            // Mendapatkan model tabel
-            DefaultTableModel model = (DefaultTableModel) tblBukuAlamat.getModel();
+               // Jika teks pencarian kosong, tampilkan pesan peringatan
+               if (namaCari.isEmpty()) {
+                   JOptionPane.showMessageDialog(this, "Silakan masukkan nama yang ingin dicari.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+                   return; // Kembali tanpa melakukan pencarian
+               }
 
-            // Menghapus semua baris dalam tabel (untuk menghindari data yang tidak relevan tetap tampil)
-            model.setRowCount(0);
+               // Mendapatkan model tabel
+               DefaultTableModel model = (DefaultTableModel) tblBukuAlamat.getModel();
 
-            // Variabel untuk mengecek apakah data ditemukan
-            boolean found = false;
+               // Variabel untuk mengecek apakah data ditemukan
+               boolean found = false;
 
-            // Menelusuri setiap baris yang ada di dalam model tabel
-            for (int i = 0; i < model.getRowCount(); i++) {
-                String nama = (String) model.getValueAt(i, 0);  // Nama ada di kolom pertama (indeks 0)
+               // Simpan data asli dari tabel ke dalam ArrayList sementara
+               ArrayList<Object[]> filteredData = new ArrayList<>();
 
-                // Membandingkan nama yang dicari dengan nama dalam tabel
-                if (nama.toLowerCase().contains(namaCari)) {
-                    // Jika nama cocok, tambahkan baris ke model tabel
-                    model.addRow(new Object[]{
-                        model.getValueAt(i, 0), // Nama
-                        model.getValueAt(i, 1), // Alamat
-                        model.getValueAt(i, 2)  // Nomor Telepon
-                    });
-                    found = true;
-                }
-            }
+               // Telusuri setiap baris yang ada di dalam model tabel
+               for (int i = 0; i < model.getRowCount(); i++) {
+                   String nama = (String) model.getValueAt(i, 0);  // Nama ada di kolom pertama (indeks 0)
 
-            // Pesan jika tidak ada data yang ditemukan
-            if (!found) {
-                JOptionPane.showMessageDialog(this, "Nama tidak ditemukan.", "Peringatan", JOptionPane.INFORMATION_MESSAGE);
-            }
+                   // Membandingkan nama yang dicari dengan nama dalam tabel
+                   if (nama.toLowerCase().contains(namaCari)) {
+                       // Jika nama cocok, simpan data yang cocok ke dalam filteredData
+                       filteredData.add(new Object[]{
+                           model.getValueAt(i, 0), // Nama
+                           model.getValueAt(i, 1), // Alamat
+                           model.getValueAt(i, 2)  // Nomor Telepon
+                       });
+                       found = true;
+                   }
+               }
+
+               // Kosongkan tabel sebelum menampilkan hasil pencarian
+               model.setRowCount(0);
+
+               // Masukkan data yang ditemukan ke dalam tabel
+               for (Object[] row : filteredData) {
+                   model.addRow(row);
+               }
+
+               // Pesan jika tidak ada data yang ditemukan
+               if (!found) {
+                   JOptionPane.showMessageDialog(this, "Nama tidak ditemukan.", "Peringatan", JOptionPane.INFORMATION_MESSAGE);
+               }
     }//GEN-LAST:event_btnCariActionPerformed
 
     /**
