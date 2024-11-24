@@ -86,6 +86,11 @@ public class FrameBukuAlamat extends javax.swing.JFrame {
         });
 
         btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -271,6 +276,16 @@ public class FrameBukuAlamat extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Silakan pilih kontak yang ingin dihapus.", "Peringatan", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+         // Mengosongkan field input
+        txtNama.setText("");
+        txtAlamat.setText("");
+        txtTelepon.setText("");
+
+        // Menghapus pemilihan baris di tabel (Optional)
+        tblBukuAlamat.clearSelection();
+    }//GEN-LAST:event_btnClearActionPerformed
 
     /**
      * @param args the command line arguments
